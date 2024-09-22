@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
+
+// Function executed by Thread 1
+void* thread_function1(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        printf("Thread 1 is running\n");
+        sleep(2); // Simulate work with a 1-second sleep
+    }
+    pthread_exit(NULL);
+}
+
+// Function executed by Thread 2
+void* thread_function2(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        printf("Thread 2 is running\n");
+        sleep(2); // Simulate work with a 1-second sleep
+    }
+    pthread_exit(NULL);
+}
+
+// Function executed by Thread 3
+void* thread_function3(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        printf("Thread 3 is running\n");
+        sleep(2); // Simulate work with a 1-second sleep
+    }
+    pthread_exit(NULL);
+}
+
+int main() {
+    pthread_t thread1, thread2, thread3;
+
+    // Creating threads
+    if (pthread_create(&thread1, NULL, thread_function1, NULL)) {
+        fprintf(stderr, "Error creating thread 1\n");
+        return 1;
+    }
+
+    if (pthread_create(&thread2, NULL, thread_function2, NULL)) {
+        fprintf(stderr, "Error creating thread 2\n");
+        return 1;
+    }
+
+    if (pthread_create(&thread3, NULL, thread_function3, NULL)) {
+        fprintf(stderr, "Error creating thread 3\n");
+        return 1;
+    }
+
+    // Waiting for all threads to finish
+    if (pthread_join(thread1, NULL)) {
+        fprintf(stderr, "Error joining thread 1\n");
+        return 2;
+    }
+
+    if (pthread_join(thread2, NULL)) {
+        fprintf(stderr, "Error joining thread 2\n");
+        return 2;
+    }
+
+    if (pthread_join(thread3, NULL)) {
+        fprintf(stderr, "Error joining thread 3\n");
+        return 2;
+    }
+
+    printf("All threads finished execution\n");
+    return 0;
+}
